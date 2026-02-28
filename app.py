@@ -171,7 +171,7 @@ if uploaded_file:
             st.session_state.zip_data = zip_buffer.getvalue()
             st.session_state.zip_ready = True
 
-        st.success("✅ Name cards generated successfully! Download will begin shortly.")
+        st.success("✅ Name cards generated successfully! ")
 
     # Show download button AFTER generation
     if st.session_state.zip_ready:
