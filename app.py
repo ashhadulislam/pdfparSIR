@@ -127,10 +127,10 @@ if uploaded_file:
 
     st.subheader("Adjust Margins")
 
-    top_margin = st.slider("Top Margin", 0, h//2, 100)
+    top_margin = st.slider("Top Margin", 0, h//2, 120)
     bottom_margin = st.slider("Bottom Margin", 0, h//2, 100)
-    left_margin = st.slider("Left Margin", 0, w//2, 50)
-    right_margin = st.slider("Right Margin", 0, w//2, 50)
+    left_margin = st.slider("Left Margin", 0, w//2, 60)
+    right_margin = st.slider("Right Margin", 0, w//2, 60)
 
     preview_with_guides = draw_guides(
         img,
