@@ -142,30 +142,43 @@ if uploaded_file:
 
     st.image(preview_with_guides, channels="BGR", use_container_width=True)
 
-    if st.button("Download Name Cards"):
+    if "zip_ready" not in st.session_state:
+        st.session_state.zip_ready = False
+        st.session_state.zip_data = None
 
-        temp_dir = extract_cards(
-            doc,
-            start_page,
-            end_page,
-            top_margin,
-            bottom_margin,
-            left_margin,
-            right_margin
-        )
+    if st.button("Generate Name Cards ZIP"):
 
-        zip_buffer = BytesIO()
+        with st.spinner("Processing pages... Please wait ⏳"):
+            temp_dir = extract_cards(
+                doc,
+                start_page,
+                end_page,
+                top_margin,
+                bottom_margin,
+                left_margin,
+                right_margin
+            )
 
-        with zipfile.ZipFile(zip_buffer, "w") as zipf:
-            for file in os.listdir(temp_dir):
-                zipf.write(
-                    os.path.join(temp_dir, file),
-                    arcname=file
-                )
+            zip_buffer = BytesIO()
+
+            with zipfile.ZipFile(zip_buffer, "w") as zipf:
+                for file in os.listdir(temp_dir):
+                    zipf.write(
+                        os.path.join(temp_dir, file),
+                        arcname=file
+                    )
+
+            st.session_state.zip_data = zip_buffer.getvalue()
+            st.session_state.zip_ready = True
+
+        st.success("✅ Name cards generated successfully! Download will begin shortly.")
+
+    # Show download button AFTER generation
+    if st.session_state.zip_ready:
 
         st.download_button(
-            label="Download ZIP",
-            data=zip_buffer.getvalue(),
+            label="⬇ Download ZIP File",
+            data=st.session_state.zip_data,
             file_name="name_cards.zip",
             mime="application/zip"
         )
