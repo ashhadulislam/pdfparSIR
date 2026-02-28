@@ -100,7 +100,7 @@ def draw_guides(img, top, bottom, left, right):
 # Streamlit UI
 # ----------------------------------
 
-st.title("📄 Electoral Roll Name Card Extractor")
+st.title("Name Card Extractor")
 
 uploaded_file = st.file_uploader("Upload PDF", type=["pdf"])
 
