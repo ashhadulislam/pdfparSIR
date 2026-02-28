@@ -70,12 +70,39 @@ def extract_cards(doc, start_page, end_page,
                 card = cropped[y1:y2, x1:x2]
 
                 filename = f"page_{page_number+1}_card_{card_count}.png"
-                cv2.imwrite(os.path.join(temp_dir, filename), card)
+                if not is_blank_image(card):
+                    cv2.imwrite(os.path.join(temp_dir, filename), card)
+                    
 
                 card_count += 1
 
     return temp_dir
 
+
+def is_blank_image(img, std_threshold=8, edge_threshold=0.01):
+    """
+    Detect if an image is blank.
+
+    std_threshold: lower = stricter blank detection
+    edge_threshold: % of edge pixels allowed
+    """
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # 1️⃣ Low variation check
+    std_dev = np.std(gray)
+
+    if std_dev > std_threshold:
+        return False
+
+    # 2️⃣ Edge check
+    edges = cv2.Canny(gray, 50, 150)
+    edge_ratio = np.count_nonzero(edges) / edges.size
+
+    if edge_ratio > edge_threshold:
+        return False
+
+    return True
 
 # ----------------------------------
 # Draw margin lines for preview
