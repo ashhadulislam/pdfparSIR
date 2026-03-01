@@ -206,7 +206,7 @@ if uploaded_file:
         st.download_button(
             label="⬇ Download ZIP File",
             data=st.session_state.zip_data,
-            file_name="name_cards.zip",
+            file_name=f"{os.path.splitext(uploaded_file.name)[0]}.zip",
             mime="application/zip"
         )
 
